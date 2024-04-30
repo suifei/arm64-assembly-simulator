@@ -1,5 +1,5 @@
-__text:0000000100AE0D64             ; void __cdecl -[TCTDunCodeManager setRedirects:](TCTDunCodeManager *self, SEL, id)
-__text:0000000100AE0D64             __TCTDunCodeManager_setRedirects__      ; DATA XREF: __objc_data:00000001043F19D0↓o
+__text:0000000100AE0D64             ; void __cdecl -[ :]( *self, SEL, id)
+__text:0000000100AE0D64                   ; DATA XREF: __objc_data:00000001043F19D0↓o
 __text:0000000100AE0D64
 __text:0000000100AE0D64             var_40          = -0x40
 __text:0000000100AE0D64             var_38          = -0x38
@@ -38,7 +38,7 @@ __text:0000000100AE0DBC 49 5B 68 F8                 LDR             X9, [X26,W8,
 __text:0000000100AE0DC0 88 6D 9E 52                 MOV             W8, #0x9133F36C
 __text:0000000100AE0DC0 68 26 B2 72
 __text:0000000100AE0DC8 20 01 1F D6                 BR              X9      ; Branch To Register
-__text:0000000100AE0DC8             ; End of function -[TCTDunCodeManager setRedirects:]
+__text:0000000100AE0DC8             ; End of function -[ setRedirects:]
 __text:0000000100AE0DC8
 __text:0000000100AE0DCC
 __text:0000000100AE0DCC             ; =============== S U B R O U T I N E =======================================

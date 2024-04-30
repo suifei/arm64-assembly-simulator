@@ -1,0 +1,542 @@
+{
+    "4306373988": {
+        "address": 4306373988,
+        "ophex": "FA 67 BB A9",
+        "instruction": "STP             X26, X25, [SP,#-0x10+var_40]!",
+        "comment": "Store Pair"
+    },
+    "4306373992": {
+        "address": 4306373992,
+        "ophex": "F8 5F 01 A9",
+        "instruction": "STP             X24, X23, [SP,#0x40+var_30]",
+        "comment": "Store Pair"
+    },
+    "4306373996": {
+        "address": 4306373996,
+        "ophex": "F6 57 02 A9",
+        "instruction": "STP             X22, X21, [SP,#0x40+var_20]",
+        "comment": "Store Pair"
+    },
+    "4306374000": {
+        "address": 4306374000,
+        "ophex": "F4 4F 03 A9",
+        "instruction": "STP             X20, X19, [SP,#0x40+var_10]",
+        "comment": "Store Pair"
+    },
+    "4306374004": {
+        "address": 4306374004,
+        "ophex": "FD 7B 04 A9",
+        "instruction": "STP             X29, X30, [SP,#0x40+var_s0]",
+        "comment": "Store Pair"
+    },
+    "4306374008": {
+        "address": 4306374008,
+        "ophex": "FD 03 01 91",
+        "instruction": "ADD             X29, SP, #0x40",
+        "comment": "Rd = Op1 + Op2"
+    },
+    "4306374012": {
+        "address": 4306374012,
+        "ophex": "F3 03 02 AA",
+        "instruction": "MOV             X19, X2",
+        "comment": "Rd = Op2"
+    },
+    "4306374016": {
+        "address": 4306374016,
+        "ophex": "F4 03 00 AA",
+        "instruction": "MOV             X20, X0",
+        "comment": "Rd = Op2"
+    },
+    "4306374020": {
+        "address": 4306374020,
+        "ophex": "56 AD 99 52",
+        "instruction": "MOV             W22, #0xF845CD6A",
+        "comment": ""
+    },
+    "4306374028": {
+        "address": 4306374028,
+        "ophex": "77 7D 8C 52",
+        "instruction": "MOV             W23, #0xC13D63EB",
+        "comment": ""
+    },
+    "4306374036": {
+        "address": 4306374036,
+        "ophex": "98 6D 9E 52",
+        "instruction": "MOV             W24, #0x9133F36C",
+        "comment": ""
+    },
+    "4306374044": {
+        "address": 4306374044,
+        "ophex": "59 1F 8A 52",
+        "instruction": "MOV             W25, #0x229E50FA",
+        "comment": ""
+    },
+    "4306374052": {
+        "address": 4306374052,
+        "ophex": "28 C1 01 D0",
+        "instruction": "ADRP            X8, #selRef_redirects@PAGE",
+        "comment": "Address of Page"
+    },
+    "4306374056": {
+        "address": 4306374056,
+        "ophex": "15 5D 46 F9",
+        "instruction": "LDR             X21, [X8,#selRef_redirects@PAGEOFF]",
+        "comment": "Load from Memory"
+    },
+    "4306374060": {
+        "address": 4306374060,
+        "ophex": "1F 03 16 6B",
+        "instruction": "CMP             W24, W22",
+        "comment": "Set cond. codes on Op1 - Op2"
+    },
+    "4306374064": {
+        "address": 4306374064,
+        "ophex": "E8 A7 9F 1A",
+        "instruction": "CSET            W8, LT",
+        "comment": "Conditional Set"
+    },
+    "4306374068": {
+        "address": 4306374068,
+        "ophex": "BA D6 01 F0",
+        "instruction": "ADRL            X26, off_1045B7C20",
+        "comment": ""
+    },
+    "4306374076": {
+        "address": 4306374076,
+        "ophex": "49 5B 68 F8",
+        "instruction": "LDR             X9, [X26,W8,UXTW#3]",
+        "comment": "Load from Memory"
+    },
+    "4306374080": {
+        "address": 4306374080,
+        "ophex": "88 6D 9E 52",
+        "instruction": "MOV             W8, #0x9133F36C",
+        "comment": ""
+    },
+    "4306374088": {
+        "address": 4306374088,
+        "ophex": "20 01 1F D6",
+        "instruction": "BR              X9",
+        "comment": "Branch To Register"
+    },
+    "4306374092": {
+        "address": 4306374092,
+        "ophex": "1F 01 19 6B",
+        "instruction": "CMP             W8, W25",
+        "comment": "Set cond. codes on Op1 - Op2"
+    },
+    "4306374096": {
+        "address": 4306374096,
+        "ophex": "E9 A7 9F 1A",
+        "instruction": "CSET            W9, LT",
+        "comment": "Conditional Set"
+    },
+    "4306374100": {
+        "address": 4306374100,
+        "ophex": "AA D6 01 F0",
+        "instruction": "ADRL            X10, off_1045B7C30",
+        "comment": ""
+    },
+    "4306374108": {
+        "address": 4306374108,
+        "ophex": "49 59 69 F8",
+        "instruction": "LDR             X9, [X10,W9,UXTW#3]",
+        "comment": "Load from Memory"
+    },
+    "4306374112": {
+        "address": 4306374112,
+        "ophex": "20 01 1F D6",
+        "instruction": "BR              X9",
+        "comment": "Branch To Register"
+    },
+    "4306374116": {
+        "address": 4306374116,
+        "ophex": "A9 D6 01 F0",
+        "instruction": "ADRP            X9, #off_1045B7C48@PAGE",
+        "comment": "Address of Page"
+    },
+    "4306374120": {
+        "address": 4306374120,
+        "ophex": "29 25 46 F9",
+        "instruction": "LDR             X9, [X9,#off_1045B7C48@PAGEOFF]",
+        "comment": "Load from Memory"
+    },
+    "4306374124": {
+        "address": 4306374124,
+        "ophex": "20 01 1F D6",
+        "instruction": "BR              X9",
+        "comment": "Branch To Register"
+    },
+    "4306374128": {
+        "address": 4306374128,
+        "ophex": "A9 D6 01 F0",
+        "instruction": "ADRP            X9, #off_1045B7C50@PAGE",
+        "comment": "Address of Page"
+    },
+    "4306374132": {
+        "address": 4306374132,
+        "ophex": "29 29 46 F9",
+        "instruction": "LDR             X9, [X9,#off_1045B7C50@PAGEOFF]",
+        "comment": "Load from Memory"
+    },
+    "4306374136": {
+        "address": 4306374136,
+        "ophex": "20 01 1F D6",
+        "instruction": "BR              X9",
+        "comment": "Branch To Register"
+    },
+    "4306374140": {
+        "address": 4306374140,
+        "ophex": "FF 02 16 6B",
+        "instruction": "CMP             W23, W22",
+        "comment": "Set cond. codes on Op1 - Op2"
+    },
+    "4306374144": {
+        "address": 4306374144,
+        "ophex": "E8 A7 9F 1A",
+        "instruction": "CSET            W8, LT",
+        "comment": "Conditional Set"
+    },
+    "4306374148": {
+        "address": 4306374148,
+        "ophex": "49 5B 68 F8",
+        "instruction": "LDR             X9, [X26,W8,UXTW#3]",
+        "comment": "Load from Memory"
+    },
+    "4306374152": {
+        "address": 4306374152,
+        "ophex": "68 7D 8C 52",
+        "instruction": "MOV             W8, #0xC13D63EB",
+        "comment": ""
+    },
+    "4306374160": {
+        "address": 4306374160,
+        "ophex": "20 01 1F D6",
+        "instruction": "BR              X9",
+        "comment": "Branch To Register"
+    },
+    "4306374164": {
+        "address": 4306374164,
+        "ophex": "1F 01 16 6B",
+        "instruction": "CMP             W8, W22",
+        "comment": "Set cond. codes on Op1 - Op2"
+    },
+    "4306374168": {
+        "address": 4306374168,
+        "ophex": "E9 17 9F 1A",
+        "instruction": "CSET            W9, EQ",
+        "comment": "Conditional Set"
+    },
+    "4306374172": {
+        "address": 4306374172,
+        "ophex": "AA D6 01 F0",
+        "instruction": "ADRL            X10, off_1045B7C70",
+        "comment": ""
+    },
+    "4306374180": {
+        "address": 4306374180,
+        "ophex": "49 59 69 F8",
+        "instruction": "LDR             X9, [X10,W9,UXTW#3]",
+        "comment": "Load from Memory"
+    },
+    "4306374184": {
+        "address": 4306374184,
+        "ophex": "20 01 1F D6",
+        "instruction": "BR              X9",
+        "comment": "Branch To Register"
+    },
+    "4306374188": {
+        "address": 4306374188,
+        "ophex": "FF 02 16 6B",
+        "instruction": "CMP             W23, W22",
+        "comment": "Set cond. codes on Op1 - Op2"
+    },
+    "4306374192": {
+        "address": 4306374192,
+        "ophex": "E8 A7 9F 1A",
+        "instruction": "CSET            W8, LT",
+        "comment": "Conditional Set"
+    },
+    "4306374196": {
+        "address": 4306374196,
+        "ophex": "49 5B 68 F8",
+        "instruction": "LDR             X9, [X26,W8,UXTW#3]",
+        "comment": "Load from Memory"
+    },
+    "4306374200": {
+        "address": 4306374200,
+        "ophex": "68 7D 8C 52",
+        "instruction": "MOV             W8, #0xC13D63EB",
+        "comment": ""
+    },
+    "4306374208": {
+        "address": 4306374208,
+        "ophex": "20 01 1F D6",
+        "instruction": "BR              X9",
+        "comment": "Branch To Register"
+    },
+    "4306374212": {
+        "address": 4306374212,
+        "ophex": "1F 01 19 6B",
+        "instruction": "CMP             W8, W25",
+        "comment": "Set cond. codes on Op1 - Op2"
+    },
+    "4306374216": {
+        "address": 4306374216,
+        "ophex": "E9 17 9F 1A",
+        "instruction": "CSET            W9, EQ",
+        "comment": "Conditional Set"
+    },
+    "4306374220": {
+        "address": 4306374220,
+        "ophex": "AA D6 01 F0",
+        "instruction": "ADRL            X10, off_1045B7C60",
+        "comment": ""
+    },
+    "4306374228": {
+        "address": 4306374228,
+        "ophex": "49 59 69 F8",
+        "instruction": "LDR             X9, [X10,W9,UXTW#3]",
+        "comment": "Load from Memory"
+    },
+    "4306374232": {
+        "address": 4306374232,
+        "ophex": "20 01 1F D6",
+        "instruction": "BR              X9",
+        "comment": "Branch To Register"
+    },
+    "4306374236": {
+        "address": 4306374236,
+        "ophex": "1F 01 16 6B",
+        "instruction": "CMP             W8, W22",
+        "comment": "Set cond. codes on Op1 - Op2"
+    },
+    "4306374240": {
+        "address": 4306374240,
+        "ophex": "E9 A7 9F 1A",
+        "instruction": "CSET            W9, LT",
+        "comment": "Conditional Set"
+    },
+    "4306374244": {
+        "address": 4306374244,
+        "ophex": "49 5B 69 F8",
+        "instruction": "LDR             X9, [X26,W9,UXTW#3]",
+        "comment": "Load from Memory"
+    },
+    "4306374248": {
+        "address": 4306374248,
+        "ophex": "20 01 1F D6",
+        "instruction": "BR              X9",
+        "comment": "Branch To Register"
+    },
+    "4306374252": {
+        "address": 4306374252,
+        "ophex": "1F 01 17 6B",
+        "instruction": "CMP             W8, W23",
+        "comment": "Set cond. codes on Op1 - Op2"
+    },
+    "4306374256": {
+        "address": 4306374256,
+        "ophex": "E9 A7 9F 1A",
+        "instruction": "CSET            W9, LT",
+        "comment": "Conditional Set"
+    },
+    "4306374260": {
+        "address": 4306374260,
+        "ophex": "AA D6 01 F0",
+        "instruction": "ADRL            X10, off_1045B7C80",
+        "comment": ""
+    },
+    "4306374268": {
+        "address": 4306374268,
+        "ophex": "49 59 69 F8",
+        "instruction": "LDR             X9, [X10,W9,UXTW#3]",
+        "comment": "Load from Memory"
+    },
+    "4306374272": {
+        "address": 4306374272,
+        "ophex": "20 01 1F D6",
+        "instruction": "BR              X9",
+        "comment": "Branch To Register"
+    },
+    "4306374276": {
+        "address": 4306374276,
+        "ophex": "E9 17 9F 1A",
+        "instruction": "CSET            W9, EQ",
+        "comment": "Conditional Set"
+    },
+    "4306374280": {
+        "address": 4306374280,
+        "ophex": "AA D6 01 F0",
+        "instruction": "ADRL            X10, off_1045B7C90",
+        "comment": ""
+    },
+    "4306374288": {
+        "address": 4306374288,
+        "ophex": "49 59 69 F8",
+        "instruction": "LDR             X9, [X10,W9,UXTW#3]",
+        "comment": "Load from Memory"
+    },
+    "4306374292": {
+        "address": 4306374292,
+        "ophex": "20 01 1F D6",
+        "instruction": "BR              X9",
+        "comment": "Branch To Register"
+    },
+    "4306374296": {
+        "address": 4306374296,
+        "ophex": "3F 03 16 6B",
+        "instruction": "CMP             W25, W22",
+        "comment": "Set cond. codes on Op1 - Op2"
+    },
+    "4306374300": {
+        "address": 4306374300,
+        "ophex": "E8 A7 9F 1A",
+        "instruction": "CSET            W8, LT",
+        "comment": "Conditional Set"
+    },
+    "4306374304": {
+        "address": 4306374304,
+        "ophex": "49 5B 68 F8",
+        "instruction": "LDR             X9, [X26,W8,UXTW#3]",
+        "comment": "Load from Memory"
+    },
+    "4306374308": {
+        "address": 4306374308,
+        "ophex": "48 1F 8A 52",
+        "instruction": "MOV             W8, #0x229E50FA",
+        "comment": ""
+    },
+    "4306374316": {
+        "address": 4306374316,
+        "ophex": "20 01 1F D6",
+        "instruction": "BR              X9",
+        "comment": "Branch To Register"
+    },
+    "4306374320": {
+        "address": 4306374320,
+        "ophex": "1F 01 18 6B",
+        "instruction": "CMP             W8, W24",
+        "comment": "Set cond. codes on Op1 - Op2"
+    },
+    "4306374324": {
+        "address": 4306374324,
+        "ophex": "E9 17 9F 1A",
+        "instruction": "CSET            W9, EQ",
+        "comment": "Conditional Set"
+    },
+    "4306374328": {
+        "address": 4306374328,
+        "ophex": "AA D6 01 F0",
+        "instruction": "ADRL            X10, off_1045B7CA0",
+        "comment": ""
+    },
+    "4306374336": {
+        "address": 4306374336,
+        "ophex": "49 59 69 F8",
+        "instruction": "LDR             X9, [X10,W9,UXTW#3]",
+        "comment": "Load from Memory"
+    },
+    "4306374340": {
+        "address": 4306374340,
+        "ophex": "20 01 1F D6",
+        "instruction": "BR              X9",
+        "comment": "Branch To Register"
+    },
+    "4306374344": {
+        "address": 4306374344,
+        "ophex": "E0 03 14 AA",
+        "instruction": "MOV             X0, X20",
+        "comment": "object"
+    },
+    "4306374348": {
+        "address": 4306374348,
+        "ophex": "E1 03 15 AA",
+        "instruction": "MOV             X1, X21",
+        "comment": "key"
+    },
+    "4306374352": {
+        "address": 4306374352,
+        "ophex": "E2 03 13 AA",
+        "instruction": "MOV             X2, X19",
+        "comment": "value"
+    },
+    "4306374356": {
+        "address": 4306374356,
+        "ophex": "63 60 80 52",
+        "instruction": "MOV             W3, #0x303",
+        "comment": "policy"
+    },
+    "4306374360": {
+        "address": 4306374360,
+        "ophex": "D9 F4 88 94",
+        "instruction": "BL              _objc_setAssociatedObject",
+        "comment": "Branch with Link"
+    },
+    "4306374364": {
+        "address": 4306374364,
+        "ophex": "DF 02 16 6B",
+        "instruction": "CMP             W22, W22",
+        "comment": "Set cond. codes on Op1 - Op2"
+    },
+    "4306374368": {
+        "address": 4306374368,
+        "ophex": "E8 A7 9F 1A",
+        "instruction": "CSET            W8, LT",
+        "comment": "Conditional Set"
+    },
+    "4306374372": {
+        "address": 4306374372,
+        "ophex": "49 5B 68 F8",
+        "instruction": "LDR             X9, [X26,W8,UXTW#3]",
+        "comment": "Load from Memory"
+    },
+    "4306374376": {
+        "address": 4306374376,
+        "ophex": "48 AD 99 52",
+        "instruction": "MOV             W8, #0xF845CD6A",
+        "comment": ""
+    },
+    "4306374384": {
+        "address": 4306374384,
+        "ophex": "20 01 1F D6",
+        "instruction": "BR              X9",
+        "comment": "Branch To Register"
+    },
+    "4306374388": {
+        "address": 4306374388,
+        "ophex": "FD 7B 44 A9",
+        "instruction": "LDP             X29, X30, [SP,#arg_40]",
+        "comment": "Load Pair"
+    },
+    "4306374392": {
+        "address": 4306374392,
+        "ophex": "F4 4F 43 A9",
+        "instruction": "LDP             X20, X19, [SP,#arg_30]",
+        "comment": "Load Pair"
+    },
+    "4306374396": {
+        "address": 4306374396,
+        "ophex": "F6 57 42 A9",
+        "instruction": "LDP             X22, X21, [SP,#arg_20]",
+        "comment": "Load Pair"
+    },
+    "4306374400": {
+        "address": 4306374400,
+        "ophex": "F8 5F 41 A9",
+        "instruction": "LDP             X24, X23, [SP,#arg_10]",
+        "comment": "Load Pair"
+    },
+    "4306374404": {
+        "address": 4306374404,
+        "ophex": "FA 67 C5 A8",
+        "instruction": "LDP             X26, X25, [SP+arg_0],#0x50",
+        "comment": "Load Pair"
+    },
+    "4306374408": {
+        "address": 4306374408,
+        "ophex": "C0 03 5F D6",
+        "instruction": "RET",
+        "comment": "Return from Subroutine"
+    }
+}

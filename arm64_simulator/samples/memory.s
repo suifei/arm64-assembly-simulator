@@ -1,10 +1,10 @@
 __objc_methname:000000010320C468 72 65 64 69 sel_redirects   DCB "redirects",0       ; DATA XREF: __objc_selrefs:selRef_redirects↓o
 __objc_methname:000000010320C468 72 65 63 74…    
-__objc_selrefs:0000000104306CB8 68 C4 20 03 selRef_redirects DCQ sel_redirects      ; DATA XREF: +[TCTDunCodeManager signatureWithURL:body:]+D0↑o
-__objc_selrefs:0000000104306CB8 01 00 00 00                                         ; +[TCTDunCodeManager signatureWithURL:body:]+FC↑r ...
+__objc_selrefs:0000000104306CB8 68 C4 20 03 selRef_redirects DCQ sel_redirects      ; DATA XREF: +[ ::]+D0↑o
+__objc_selrefs:0000000104306CB8 01 00 00 00                                         ; +[ ::]+FC↑r ...
 __objc_selrefs:0000000104306CB8                                                     ; "redirects"
 
-__data:00000001045B7C20 CC 0D AE 00…off_1045B7C20   DCQ sub_100AE0DCC       ; DATA XREF: -[TCTDunCodeManager setRedirects:]+50↑o
+__data:00000001045B7C20 CC 0D AE 00…off_1045B7C20   DCQ sub_100AE0DCC       ; DATA XREF: -[ :]+50↑o
 __data:00000001045B7C28 6C 0E AE 00…                DCQ sub_100AE0E6C
 __data:00000001045B7C30 E4 0D AE 00…off_1045B7C30   DCQ sub_100AE0DE4       ; DATA XREF: sub_100AE0DCC+8↑o
 __data:00000001045B7C38 14 0E AE 00…                DCQ loc_100AE0E14
