@@ -144,7 +144,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Author
 
-- **<suifei@gmail.com>**
+- **c3VpZmUgQGdtYWlsIGRvdGNvbQ==**
 - **QQ Group: 555354813**
 
 Feel free to contact me for any questions or feedback related to this project.
