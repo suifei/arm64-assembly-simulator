@@ -1,5 +1,6 @@
 # ARM64汇编模拟器
 
+[![ARM64](https://img.shields.io/badge/simulator-arm64-00FF00.svg)](https://GitHub.com/suifei/arm64-assembly-simulator)
 [![GitHub stars](https://img.shields.io/github/stars/suifei/arm64-assembly-simulator.svg?style=social&label=Star&maxAge=2592000)](https://GitHub.com/suifei/arm64-assembly-simulator/stargazers/)
 [![GitHub watchers](https://img.shields.io/github/watchers/suifei/arm64-assembly-simulator.svg?style=social&label=Watch&maxAge=2592000)](https://GitHub.com/suifei/arm64-assembly-simulator/watchers/)
 [![GitHub forks](https://img.shields.io/github/forks/suifei/arm64-assembly-simulator.svg?style=social&label=Fork&maxAge=2592000)](https://GitHub.com/suifei/arm64-assembly-simulator/network/)
