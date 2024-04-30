@@ -1,12 +1,26 @@
 # ARM64汇编模拟器
-[![许可证](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Python](https://img.shields.io/badge/python-3.6%20|%203.7%20|%203.8-blue)](https://www.python.org/)
-[![代码风格](https://img.shields.io/badge/code%20style-black-000000)](https://github.com/psf/black)
 
 [![GitHub stars](https://img.shields.io/github/stars/suifei/arm64-assembly-simulator.svg?style=social&label=Star&maxAge=2592000)](https://GitHub.com/suifei/arm64-assembly-simulator/stargazers/)
 [![GitHub watchers](https://img.shields.io/github/watchers/suifei/arm64-assembly-simulator.svg?style=social&label=Watch&maxAge=2592000)](https://GitHub.com/suifei/arm64-assembly-simulator/watchers/)
 [![GitHub forks](https://img.shields.io/github/forks/suifei/arm64-assembly-simulator.svg?style=social&label=Fork&maxAge=2592000)](https://GitHub.com/suifei/arm64-assembly-simulator/network/)
 [![GitHub followers](https://img.shields.io/github/followers/suifei.svg?style=social&label=Follow&maxAge=2592000)](https://github.com/suifei?tab=followers)
+[![Twitter Follow](https://img.shields.io/twitter/follow/csuifei?style=social)](https://twitter.com/csuifei)
+
+[![GitHub top language](https://img.shields.io/github/languages/top/suifei/arm64-assembly-simulator)](https://github.com/suifei/arm64-assembly-simulator)
+[![Python](https://img.shields.io/badge/python-3.6%20|%203.7%20|%203.8-blue)](https://www.python.org/)
+[![Code Style](https://img.shields.io/badge/code%20style-black-000000)](https://github.com/psf/black)
+[![GitHub language count](https://img.shields.io/github/languages/count/suifei/arm64-assembly-simulator)](https://github.com/suifei/arm64-assembly-simulator)
+[![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/suifei/arm64-assembly-simulator)](https://github.com/suifei/arm64-assembly-simulator)
+[![GitHub repo size](https://img.shields.io/github/repo-size/suifei/arm64-assembly-simulator)](https://github.com/suifei/arm64-assembly-simulator)
+[![GitHub tag](https://img.shields.io/github/v/tag/suifei/arm64-assembly-simulator.svg)](https://GitHub.com/suifei/arm64-assembly-simulator/tags/)
+[![GitHub commit activity](https://img.shields.io/github/commit-activity/m/suifei/arm64-assembly-simulator)](https://github.com/suifei/arm64-assembly-simulator/graphs/commit-activity)
+[![GitHub last commit](https://img.shields.io/github/last-commit/suifei/arm64-assembly-simulator)](https://github.com/suifei/arm64-assembly-simulator/commits)
+[![GitHub contributors](https://img.shields.io/github/contributors/suifei/arm64-assembly-simulator.svg)](https://GitHub.com/suifei/arm64-assembly-simulator/graphs/contributors/)
+[![GitHub issues](https://img.shields.io/github/issues-raw/suifei/arm64-assembly-simulator)](https://github.com/suifei/arm64-assembly-simulator/issues)
+[![GitHub closed issues](https://img.shields.io/github/issues-closed-raw/suifei/arm64-assembly-simulator)](https://github.com/suifei/arm64-assembly-simulator/issues?q=is%3Aissue+is%3Aclosed)
+[![GitHub pull requests](https://img.shields.io/github/issues-pr/suifei/arm64-assembly-simulator)](https://github.com/suifei/arm64-assembly-simulator/pulls)
+[![GitHub closed pull requests](https://img.shields.io/github/issues-pr-closed/suifei/arm64-assembly-simulator)](https://github.com/suifei/arm64-assembly-simulator/pulls?q=is%3Apr+is%3Aclosed)
+[![GitHub](https://img.shields.io/github/license/suifei/arm64-assembly-simulator)](https://github.com/suifei/arm64-assembly-simulator/blob/master/LICENSE)
 
 一个轻量级的ARM64汇编代码和内存模拟器，用于解析和执行ARM64汇编指令，通常是由IDA Pro的反汇编生成的`.s`文件。
 
