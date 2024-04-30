@@ -146,7 +146,7 @@ vm.run(asm_code, pc=0x100AE0D64)
 
 ## 作者
 
-- **<suifei@gmail.com>**
+- **c3VpZmUgQGdtYWlsIGRvdGNvbQ==**
 - **QQ群: 555354813**
 
 如果对此项目有任何问题或反馈，请随时与我联系。
