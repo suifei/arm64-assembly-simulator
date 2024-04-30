@@ -295,22 +295,38 @@ class ARM64Registers:
             bool: 如果条件满足，则返回True；否则返回False。
 
         """
+        # 定义条件字典，键为条件字符串，值为条件判断逻辑
         conditions = {
+            # 相等条件
             "EQ": self.nzcv["Z"] == 1,
+            # 不相等条件
             "NE": self.nzcv["Z"] == 0,
+            # 带有进位标志条件
             "CS": self.nzcv["C"] == 1,
+            # 不带有进位标志条件
             "CC": self.nzcv["C"] == 0,
+            # 负数条件
             "MI": self.nzcv["N"] == 1,
+            # 正数条件
             "PL": self.nzcv["N"] == 0,
+            # 溢出条件
             "VS": self.nzcv["V"] == 1,
+            # 无溢出条件
             "VC": self.nzcv["V"] == 0,
+            # 大于条件
             "HI": self.nzcv["C"] == 1 and self.nzcv["Z"] == 0,
+            # 小于等于条件
             "LS": self.nzcv["C"] == 0 or self.nzcv["Z"] == 1,
+            # 大于等于条件
             "GE": self.nzcv["N"] == self.nzcv["V"],
+            # 小于条件
             "LT": self.nzcv["N"] != self.nzcv["V"],
+            # 大于条件
             "GT": self.nzcv["Z"] == 0 and self.nzcv["N"] == self.nzcv["V"],
+            # 小于等于条件
             "LE": self.nzcv["Z"] == 1 or self.nzcv["N"] != self.nzcv["V"],
         }
+        # 根据条件字符串获取对应的条件判断逻辑，如果条件字符串不存在，则返回False
         return conditions.get(condition.upper(), False)
 
     def format_nzcv(self):
@@ -359,8 +375,10 @@ class ARM64Registers:
 
 class ARM64Simulator:
     _memory = {}
-
-    def __init__(self, _memory, step_pause=False, verbose=False):
+    _programs = None
+    after_hook = None
+    before_hook = None
+    def __init__(self, _memory, step_pause=False, verbose=False, output_file=None, max_step=1000):
         """
         初始化函数，用于设置模拟器实例的初始状态
 
@@ -368,6 +386,7 @@ class ARM64Simulator:
         - _memory: 内存实例，用于存储和读取指令和数据
         - step_pause: 是否在单步执行时暂停，默认为False
         - verbose: 是否打印调试信息，默认为False
+        - output_file: 输出文件名，默认为None
 
         Returns:
         - None
@@ -375,15 +394,67 @@ class ARM64Simulator:
         """
         self.regs = ARM64Registers()
         self._memory = _memory
-        self.instruction_length = 4
-        self.register_length = 8
-        self.memory_length = 8
+        self.instruction_length = 0x04
         self.jump = False
         self.ret = False
         self.base_address = 0x100000000
+        self.current_pc = 0x0
         self.step_pause = step_pause
         self.verbose = verbose
-        self.size = 0x4
+        self.size = 0x0
+        self.output_file = output_file
+        self.empty_output_file()
+        self.max_step = max_step
+        self.step_count = 0
+
+    def set_output_file(self, output_file):
+        self.output_file = output_file
+        self.empty_output_file()
+        
+    def empty_output_file(self):
+        """
+        清空输出文件内容
+        """
+        if self.output_file:
+            with open(self.output_file, "w") as f:
+                f.write("")
+    def append_output_file(self, data):
+        """
+        将数据追加到输出文件中
+        如果文件已存在则追加，否则创建新文件
+
+        Args:
+        - data: 要追加到输出文件中的数据
+
+        Returns:
+        - None
+
+        """
+        if self.output_file:
+            with open(self.output_file, "a") as f:
+                f.write(data)
+    def hook_instruction(self, before = None, after = None):
+        """
+        为 ARM64 指令添加前置和后置钩子函数。
+        
+        Args:
+            before (callable, optional): 前置钩子函数，传入三个参数：vm, opcode, operands。
+            after (callable, optional): 后置钩子函数，传入三个参数：vm, opcode, operands。
+        
+        Returns:
+            None
+        
+        """
+        if before:
+            if len(before.__code__.co_varnames) != 3:
+                print("before_hook 函数参数数量不正确，应该为 (vm, opcode, operands)")
+            else:
+                self.before_hook = before
+        if after:
+            if len(after.__code__.co_varnames) != 3:
+                print("after_hook 函数参数数量不正确，应该为 (vm, opcode, operands)")
+            else:
+                self.after_hook = after
 
     def step(self, instruction):
         """
@@ -396,11 +467,14 @@ class ARM64Simulator:
             None
 
         """
-        if self.ret:
-            return
-        self.parse(instruction)
-
-    def run(self, asm_code, pc):
+        if self.step_count < self.max_step:
+            if self.ret:
+                return
+            instruction = self.parse(instruction)
+            self.step_count +=1
+        return instruction
+    
+    def run(self, asm_code, pc, max_step=None):
         """
         Args:
         asm_code: dict, 包含汇编指令及其对应机器码和地址的字典
@@ -425,40 +499,58 @@ class ARM64Simulator:
         self.set_register("PC", pc)
         self.base_address = pc
         self.size = max(asm_code.keys()) - self.base_address
-        while not self.ret:
-            current_pc = int(self.get_register("PC"))
-            if current_pc in asm_code:
-                instruction = asm_code[current_pc]["instruction"]
-                ophex = asm_code[current_pc]["ophex"]
-                print(f"执行 PC: 0x{current_pc:016X}:\t{ophex}\t{instruction}")
-                self.step(instruction)
+        self._programs = asm_code
+        
+        self.step_count =0
+        if not max_step:
+            self.max_step = self.size
+        while not self.ret and self.step_count < self.max_step:
+            self.current_pc = int(self.get_register("PC"))
+            if self.current_pc in self._programs:
+                instruction = self._programs[self.current_pc]["instruction"]
+                ophex = self._programs[self.current_pc]["ophex"]
+                if not self.output_file:
+                    print(f"RUN# 0x{self.current_pc:016X}:\t{ophex}\t{instruction}")
+                instruction = self.step(instruction)
+                self.append_output_file(f"0x{self.current_pc:016X}:\t{ophex}\t{instruction}\n")
+                # 更新 self._programs
+                if self.current_pc in self._programs:
+                    self._programs[self.current_pc]["instruction"] = instruction
+                    # todo instructon 需要翻译为 ophex
             else:
-                print(f"未知的 PC: 0x{current_pc:016X}")
+                print(f"ERR# 0x{self.current_pc:016X}")
                 if (
-                    current_pc < self.base_address
-                    or current_pc >= self.base_address + self.size
+                    self.current_pc < self.base_address
+                    or self.current_pc >= self.base_address + self.size
                 ):
-                    print(f"PC 超出范围: 0x{current_pc:016X}")
+                    print(f"JUMPOUT: 0x{self.current_pc:016X}")
                     break
                 # 遇到未知指令，等待用户按下回车键后继续执行，如果按'q'键则退出，按'r'键则打印寄存器状态
                 while True:
-                    input_c = input("按回车继续，按 'q' 退出，按 'r' 打印寄存器状态: ")
+                    input_c = input("按回车继续，按 'q' 退出，按 'r' 打印寄存器状态，按 'm' 打印内存状态: ")
                     if input_c == "q":
                         self.ret = True
                         break
                     elif input_c == "r":
                         self.print_register()
+                        continue
+                    elif input_c == "m":
                         self.print_memory()
                         continue
                     else:
                         break
             if not self.jump:
-                self.set_register("PC", current_pc + 4)
+                self.next()
             self.jump = False
             if self.verbose:
                 print(self.regs)
             if self.step_pause:
                 input("按回车继续...")
+    
+    def next(self):
+        self.current_pc = self.get_register('PC')
+        self.current_pc += self.instruction_length
+        self.set_register('PC', self.current_pc)
 
     def print_register(self):
         """
@@ -510,9 +602,19 @@ class ARM64Simulator:
         parts = instruction.split()
         opcode = parts[0]
         operands = parts[1:]
-        getattr(self, f"op_{opcode.lower()}", self.unknown_instruction)(operands)
+        
+        # 支持修改操作数，并返回新指令
+        if self.before_hook:
+            opcode, operands = self.before_hook(self, opcode, operands)
+        opcode , operands = getattr(self, f"op_{opcode.lower()}", self.unknown_instruction)(opcode, operands)
+        if self.after_hook:
+            opcode, operands = self.after_hook(self, opcode, operands)
+        
+        operands = self.clean_operands(operands)
+        instruction = f"{opcode}  {", ".join(operands)}"
+        return instruction
 
-    def unknown_instruction(self, operands):
+    def unknown_instruction(self, opcode, operands):
         """
         处理未知指令的函数。
 
@@ -524,7 +626,8 @@ class ARM64Simulator:
             无返回值。
 
         """
-        print("遇到未知指令。")
+        print("遇到未知指令。", operands)
+        return opcode, operands
 
     def safe_eval(self, expr):
         """
@@ -576,7 +679,7 @@ class ARM64Simulator:
         offset = self.safe_eval(offset_expr)
         return reg1, reg2, base, offset, write_back
 
-    def op_stp(self, operands):
+    def op_stp(self, opcode, operands):
         """
         将两个寄存器的值存储到由基址寄存器和偏移量确定的内存地址中。
 
@@ -597,8 +700,9 @@ class ARM64Simulator:
         self.set_memory(actual_address + 8, value2)
         if write_back:
             self.set_register(base, actual_address)
+        return opcode, operands
 
-    def op_ret(self, operands):
+    def op_ret(self, opcode, operands):
         """
         设置当前对象的ret属性为True，并返回None。
 
@@ -610,8 +714,9 @@ class ARM64Simulator:
 
         """
         self.ret = True
+        return opcode, operands
 
-    def op_br(self, operands):
+    def op_br(self, opcode, operands):
         """
         将目标地址作为程序计数器PC的值，并设置跳转标志为True。
 
@@ -624,11 +729,15 @@ class ARM64Simulator:
         """
         self.clean_operands(operands)
         dest = operands[0]
-        self.set_register("PC", self.get_register(dest))
+        val = self.get_value(dest)
+        self.set_register("PC", val)
         self.jump = True
-        print(f"BR {hex(self.get_register(dest))}")
-
-    def op_ldr(self, operands):
+        try:
+            operands[0] = f"#0x{val:016X}"
+        except:
+            print ( dest )
+        return opcode, operands
+    def op_ldr(self, opcode, operands):
         """
         从内存中加载数据到寄存器中
 
@@ -659,6 +768,7 @@ class ARM64Simulator:
             extend_type = None
             shift = 0
         self._ldr(dest, base, offset, pager, extend_type, shift)
+        return opcode, operands
 
     def _ldr(self, dest, base, offset, pager, extend_type=None, shift=0):
         """
@@ -716,7 +826,7 @@ class ARM64Simulator:
             value = self.get_memory(address)
         self.set_register(dest, value)
 
-    def op_adrp(self, operands):
+    def op_adrp(self, opcode, operands):
         """
         根据给定的操作数，计算地址并设置到寄存器中。
 
@@ -740,8 +850,9 @@ class ARM64Simulator:
             # 页偏移：页地址 = 页地址 - (页地址 & ~0xFFF)
             page_address = page_address - (page_address & ~0xFFF)
         self.set_register(dest_reg, page_address)
+        return opcode, operands
 
-    def op_adrl(self, operands):
+    def op_adrl(self, opcode, operands):
         """
         设置寄存器值为操作数对应的地址值。
 
@@ -759,8 +870,16 @@ class ARM64Simulator:
         else:
             address = self.get_value(operands[1])
         self.set_register(dest, address)
+        
+        # 跳过
+        p = '#' + hex(address)
+        if p.startswith('#') and len(p) >= 10:
+            if not self.get_register('PC') + self.instruction_length in self._programs:
+                self.next()
+        return opcode, operands
+                
 
-    def op_cset(self, operands):
+    def op_cset(self, opcode, operands):
         """
         设置条件标志寄存器。
 
@@ -776,8 +895,9 @@ class ARM64Simulator:
         condition = operands[1].upper()
         condition_met = self.regs.check_condition(condition)
         self.set_register(dest, 1 if condition_met else 0)
+        return opcode, operands
 
-    def op_cmp(self, operands):
+    def op_cmp(self, opcode, operands):
         """
         执行比较指令。
 
@@ -811,8 +931,8 @@ class ARM64Simulator:
                 else 0
             ),
         )
-
-    def op_mov(self, operands):
+        return opcode, operands
+    def op_mov(self, opcode, operands):
         """
         将源操作数src的值移动到目标操作数dest的寄存器中。
 
@@ -827,8 +947,32 @@ class ARM64Simulator:
         dest = operands[0]
         src = self.get_value(operands[1])
         self.set_register(dest, src)
+        """
+               原始指令
+        59 1F 8A 52    mov    w25,#0x50fa
+        D9 53 A4 72    movk   w25,#0x229e, LSL #16
+               IDA 指令优化后的汇编代码
+        59 1F 8A 52    MOV    W25, #0x229E50FA
+        D9 53 A4 72
+        
+        原始指令：
+        第一行指令 59 1F 8A 52 对应的是 mov w25, #0x50fa，这条指令将立即数 0x50fa 移动到寄存器 w25 中。
+        第二行指令 D9 53 A4 72 对应的是 movk w25, #0x229e, LSL #16，这条指令使用 movk，即“move keep”，
+        将 0x229e 移动到 w25 的高16位，同时保留其他位不变。LSL #16 表示将 0x229e 左移16位，然后将这个值写入 w25。
+        IDA优化后的汇编代码：
+        MOV W25, #0x229E50FA 这条指令直接将完整的32位立即数 0x229E50FA 移动到寄存器 w25 中。
+        IDA在分析过程中识别到了两条原始指令实际上是联合构成一个完整的32位立即数，
+        因此它优化这两条指令为一条更简洁明了的指令。
+        """
+        # 探测立即数是否为32位，如果是则合并，即PC地址主动移位1次
+        # 在这个虚机中的 memory 也不会存在该地址
+        p = operands[1]
+        if p.startswith('#') and len(p) >= 10:
+            if not self.get_register('PC') + self.instruction_length in self._programs:
+                self.next()
+        return opcode, operands
 
-    def op_add(self, operands):
+    def op_add(self, opcode, operands):
         """
         加法操作。
 
@@ -847,6 +991,7 @@ class ARM64Simulator:
         src1 = operands[1]
         src2 = self.get_value(operands[2])
         self.set_register(dest, self.get_register(src1) + src2)
+        return opcode, operands
 
     def clean_operands(self, operands):
         """
@@ -860,7 +1005,10 @@ class ARM64Simulator:
 
         """
         for i in range(len(operands)):
-            operands[i] = operands[i].replace(",", "")
+            s = operands[i]
+            if s.endswith(","):
+                operands[i] = s[:-1] 
+            
         return operands
 
     def get_register(self, reg):
@@ -944,16 +1092,80 @@ class ARM64Simulator:
             return self.get_memory(int("0x" + value[4:], 0))
         if len(value) >= 4 and value[0:4] == "loc_":
             return self.get_memory(int("0x" + value[4:], 0))
-        return self.get_register(value)
+        
+        if value[0] == "W" or value[0] == "X" or len(value) <= 3:
+            return self.get_register(value)
+        
+        return value
 
+# HOOK 代码范例
+
+def _nop_ops_after_hook(vm, op_name, operands):
+    if op_name == "CSET" :
+        print(f" AFTER-HOOK# {op_name} to NOP")
+        op_name = "NOP"
+        operands = []
+    return op_name, operands
+
+
+def _br_x9_after_hook(vm, op_name, operands):
+    """
+    hook操作 BR X9 的地址
+    """
+    if op_name == "BR":
+        print(f" AFTER-HOOK# 0x{vm.get_register('PC'):016X}\t{op_name} {operands[0]}")
+    return op_name, operands
+
+def _dynamic_op_after_hook(vm, op_name, operands):
+    """
+    修改分支 CSET 从 LT 改成 GE
+    执行后修改，下次执行修改后的
+    """
+    if op_name == "CSET":
+        reg_name = operands[0]
+        reg_name = reg_name.replace(",","")
+        operands[1] = 'GE'
+        print(f" AFTER-HOOK# 0x{vm.get_register('PC'):016X}\t{op_name} {reg_name}:0x{vm.get_register(reg_name):016X} , {operands[1]}")
+    return op_name, operands
+
+def _cset_lt_to_ge_before_hook(vm , op_name, operands):
+    """
+    修改分支 CSET 从 LT 改成 GE
+    执行前修改
+    """
+    if op_name == "CSET":
+        reg_name = operands[0].replace(",","")
+        operands[1] = 'GE'
+        print(f"BEFORE-HOOK# 0x{vm.get_register('PC'):016X}\t{op_name} {reg_name}:0x{vm.get_register(reg_name):016X} , {operands[1]}")
+    return op_name, operands
 
 if __name__ == "__main__":
+    # 准备输入的内容
     asm_data = read_file("samples/diasm.s")
     asm_code = load_asm_code(asm_data)
     write_to_file("samples/asm_code.json", asm_code)
     memory_lines = read_file("samples/memory.s")
     memory_data = parse_memory_lines(memory_lines)
     write_to_file("samples/memory_data.json", memory_data)
-    ARM64Simulator(memory_data, step_pause=False, verbose=False).run(
-        asm_code, 0x100AE0D64
+    
+    # 执行vm
+    # 第一个分支
+    vm = ARM64Simulator(memory_data, step_pause=False, verbose=False, output_file="samples/output1.s")
+    vm.hook_instruction(after=_br_x9_after_hook)
+    vm.run(
+        asm_code, pc=0x100AE0D64
+    )
+    
+    # 第二个分支
+    vm.set_output_file("samples/output2.s")
+    vm.hook_instruction(before=_cset_lt_to_ge_before_hook)
+    vm.run(
+        asm_code=asm_code,pc=0x100AE0D64
+    )
+
+    # 跑完第一个分支，动态修改地址，跑第二个分支
+    vm.set_output_file("samples/output3.s")
+    vm.hook_instruction(after=_dynamic_op_after_hook)
+    vm.run(
+        asm_code=asm_code,pc=0x100AE0D64
     )
