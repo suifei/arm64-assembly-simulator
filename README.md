@@ -37,6 +37,7 @@ A lightweight ARM64 assembly code and memory simulator designed to parse and exe
     - [Installation](#installation)
     - [Usage](#usage)
     - [Configuration](#configuration)
+    - [Additional Examples and Source Code](#additional-examples-and-source-code)
   - [Contributing](#contributing)
   - [License](#license)
   - [Author](#author)
@@ -52,6 +53,7 @@ This repository contains a lightweight ARM64 assembly code and memory simulator 
 - **Detailed Execution Trace**: Tracks and displays changes in register and memory states after each instruction execution.
 - **Support for Step-by-step and Continuous Execution**: Offers flexibility in instruction execution to cater to different analysis needs.
 - **Simulates Register and Memory Operations**: Enhances understanding of ARM64 operations through practical simulation.
+- **Extensibility**: Supports custom pre- and post-execution hooks, allowing the insertion of custom logic before and after instruction execution.
 
 ## Use Cases
 
@@ -96,10 +98,40 @@ python arm64_simulator.py
 
 You can modify the `ARM64Simulator` class instantiation in `arm64_simulator.py` to enable step-by-step execution or verbose output, depending on your analysis needs.
 
+1. Basic Setup and Execution:
 ```python
-simulator = ARM64Simulator(memory_data, step_pause=True, verbose=True)
-simulator.run(asm_code, starting_address)
+# Load assembly code and memory settings
+asm_data = read_file("samples/diasm.s")
+asm_code = load_asm_code(asm_data)
+memory_lines = read_file("samples/memory.s")
+memory_data = parse_memory_lines(memory_lines)
+
+# Initialize the simulator
+vm = ARM64Simulator(memory_data, step_pause=False, verbose=True, output_file="samples/output.s")
+
+# Run the simulator starting from a specified PC address
+vm.run(asm_code, pc=0x100AE0D64)
 ```
+2. Using Hooks to Modify Instruction Behavior:
+```python
+# Define a post-execution hook to convert all CSET instructions to NOP
+def nop_ops_after_hook(vm, op_name, operands):
+    if op_name == "CSET":
+        print(f"AFTER-HOOK# {op_name} to NOP")
+        op_name = "NOP"
+        operands = []
+    return op_name, operands
+
+# Set the simulator's output file
+vm.set_output_file("samples/output_with_hooks.s")
+
+# Add the hook and rerun the simulator
+vm.hook_instruction(after=nop_ops_after_hook)
+vm.run(asm_code, pc=0x100AE0D64)
+```
+
+### Additional Examples and Source Code
+For more examples and a deeper understanding of the simulator's capabilities, please refer to the source code available in this repository. The source files contain detailed comments and diverse use cases that can help you get acquainted with advanced features and customization options.
 
 ## Contributing
 

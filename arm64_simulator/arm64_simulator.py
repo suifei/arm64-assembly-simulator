@@ -387,6 +387,7 @@ class ARM64Simulator:
         - step_pause: 是否在单步执行时暂停，默认为False
         - verbose: 是否打印调试信息，默认为False
         - output_file: 输出文件名，默认为None
+        - max_step: 最大执行指令数，默认为当前函数总指令长度
 
         Returns:
         - None
@@ -408,6 +409,16 @@ class ARM64Simulator:
         self.step_count = 0
 
     def set_output_file(self, output_file):
+        """
+        设置输出文件并清空文件内容。
+        
+        Args:
+            output_file (str): 输出文件的路径。
+        
+        Returns:
+            None
+        
+        """
         self.output_file = output_file
         self.empty_output_file()
         
@@ -548,6 +559,16 @@ class ARM64Simulator:
                 input("按回车继续...")
     
     def next(self):
+        """
+        将PC寄存器中的值更新为下一条指令的地址。
+        
+        Args:
+            无
+        
+        Returns:
+            无
+        
+        """
         self.current_pc = self.get_register('PC')
         self.current_pc += self.instruction_length
         self.set_register('PC', self.current_pc)
@@ -1101,6 +1122,9 @@ class ARM64Simulator:
 # HOOK 代码范例
 
 def _nop_ops_after_hook(vm, op_name, operands):
+    """
+    将指定的操作转换为NOP操作。
+    """
     if op_name == "CSET" :
         print(f" AFTER-HOOK# {op_name} to NOP")
         op_name = "NOP"

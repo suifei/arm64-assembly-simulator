@@ -37,6 +37,7 @@
     - [安装](#安装)
     - [使用方法](#使用方法)
     - [配置](#配置)
+    - [更多示例和源代码](#更多示例和源代码)
   - [贡献](#贡献)
   - [许可证](#许可证)
   - [作者](#作者)
@@ -52,6 +53,7 @@
 - **详细的执行跟踪**: 跟踪并显示每个指令执行后寄存器和内存状态的变化。
 - **支持逐步和连续执行**: 提供灵活的指令执行方式，以满足不同的分析需求。
 - **模拟寄存器和内存操作**: 通过实际模拟增强对ARM64操作的理解。
+- **扩展性**：支持自定义前后钩子（hooks），允许在指令执行前后插入自定义逻辑。
 
 ## 用途
 
@@ -97,10 +99,41 @@ python arm64_simulator.py
 
 你可以在 `arm64_simulator.py` 文件中修改 `ARM64Simulator` 类的实例化，根据你的分析需求启用逐步执行或详细输出。
 
+1. 基础设置与执行：
 ```python
-simulator = ARM64Simulator(memory_data, step_pause=True, verbose=True)
-simulator.run(asm_code, starting_address)
+# 读取汇编代码和内存设置
+asm_data = read_file("samples/diasm.s")
+asm_code = load_asm_code(asm_data)
+memory_lines = read_file("samples/memory.s")
+memory_data = parse_memory_lines(memory_lines)
+
+# 初始化模拟器
+vm = ARM64Simulator(memory_data, step_pause=False, verbose=True, output_file="samples/output.s")
+
+# 运行模拟器，从指定的PC地址开始
+vm.run(asm_code, pc=0x100AE0D64)
 ```
+
+2.使用钩子修改指令行为：
+```python
+# 定义一个后置钩子，将所有的CSET指令转换为NOP
+def nop_ops_after_hook(vm, op_name, operands):
+    if op_name == "CSET":
+        print(f"AFTER-HOOK# {op_name} to NOP")
+        op_name = "NOP"
+        operands = []
+    return op_name, operands
+
+# 设置模拟器输出文件
+vm.set_output_file("samples/output_with_hooks.s")
+
+# 添加钩子并重新运行模拟器
+vm.hook_instruction(after=nop_ops_after_hook)
+vm.run(asm_code, pc=0x100AE0D64)
+```
+
+### 更多示例和源代码
+要获取更多示例和深入了解模拟器的功能，请参考本仓库中的源代码。源文件中包含了详细的注释和多种使用案例，可以帮助您熟悉模拟器的高级功能和自定义选项。
 
 ## 贡献
 
