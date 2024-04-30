@@ -18,7 +18,7 @@ ARM64 Assembly Code and Memory Simulator
     *安全分析：分析潜在的安全漏洞，理解攻击载荷如何影响程序状态。
     *性能分析：分析代码如何操作寄存器和内存，帮助优化性能关键代码。
 
-作者：suifei@gmail.com
+作者：c3VpZmUgQGdtYWlsIGRvdGNvbQ==
 许可协议：MIT License
 """
 
